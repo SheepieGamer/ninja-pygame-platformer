@@ -1,15 +1,16 @@
 import json
+
 import pygame
 
 AUTOTILE_MAP = {
     tuple(sorted([(1, 0), (0, 1)])): 0,
     tuple(sorted([(1, 0), (0, 1), (-1, 0)])): 1,
-    tuple(sorted([(-1, 0), (0, 1)])): 2,
-    tuple(sorted([(-1, 0), (0, -1), (0,1)])): 3,
+    tuple(sorted([(-1, 0), (0, 1)])): 2, 
+    tuple(sorted([(-1, 0), (0, -1), (0, 1)])): 3,
     tuple(sorted([(-1, 0), (0, -1)])): 4,
     tuple(sorted([(-1, 0), (0, -1), (1, 0)])): 5,
     tuple(sorted([(1, 0), (0, -1)])): 6,
-    tuple(sorted([(1, 0), (0, -1), (0, -1)])): 7,
+    tuple(sorted([(1, 0), (0, -1), (0, 1)])): 7,
     tuple(sorted([(1, 0), (-1, 0), (0, 1), (0, -1)])): 8,
 }
 
@@ -23,7 +24,7 @@ class Tilemap:
         self.tile_size = tile_size
         self.tilemap = {}
         self.offgrid_tiles = []
-    
+
     def extract(self, id_pairs, keep=False):
         matches = []
         for tile in self.offgrid_tiles.copy():
@@ -31,7 +32,7 @@ class Tilemap:
                 matches.append(tile.copy())
                 if not keep:
                     self.offgrid_tiles.remove(tile)
-        
+         
         for loc in self.tilemap:
             tile = self.tilemap[loc]
             if (tile['type'], tile['variant']) in id_pairs:
@@ -57,7 +58,7 @@ class Tilemap:
         f = open(path, 'w')
         json.dump({'tilemap': self.tilemap, 'tile_size': self.tile_size, 'offgrid': self.offgrid_tiles}, f)
         f.close()
-    
+
     def load(self, path):
         f = open(path, 'r')
         map_data = json.load(f)
@@ -67,14 +68,13 @@ class Tilemap:
         self.tile_size = map_data['tile_size']
         self.offgrid_tiles = map_data['offgrid']
 
-
     def physics_rects_around(self, pos):
         rects = []
         for tile in self.tiles_around(pos):
             if tile['type'] in PHYSICS_TILES:
                 rects.append(pygame.Rect(tile['pos'][0] * self.tile_size, tile['pos'][1] * self.tile_size, self.tile_size, self.tile_size))
         return rects
-
+    
     def autotile(self):
         for loc in self.tilemap:
             tile = self.tilemap[loc]

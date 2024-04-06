@@ -42,7 +42,7 @@ class Game:
         self.tilemap.load('map.json')
 
         self.leaf_spawners = []
-        for tree in self.tilemap.extract([('large_decor'), 2], keep=True):
+        for tree in self.tilemap.extract([('large_decor', 2)], keep=True):
             self.leaf_spawners.append(pygame.Rect(4 + tree['pos'][0], 4 + tree['pos'][1], 23, 13))
 
         self.particles = []
@@ -99,4 +99,5 @@ class Game:
             pygame.display.update()
             self.clock.tick(60)
 
-Game().run()
+if __name__ == '__main__':
+    Game().run()

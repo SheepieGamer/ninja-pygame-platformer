@@ -50,7 +50,7 @@ class PhysicsEntity:
                     entity_rect.top = rect.bottom
                     self.collisions['up'] = True
                 self.pos[1] = entity_rect.y
-
+    
         if movement[0] > 0:
             self.flip = False
         if movement[0] < 0:
@@ -60,7 +60,7 @@ class PhysicsEntity:
         
         if self.collisions['down'] or self.collisions['up']:
             self.velocity[1] = 0
-
+ 
         self.animation.update()
         
     def render(self, surf, offset=(0, 0)):
@@ -77,7 +77,7 @@ class Player(PhysicsEntity):
         self.air_time += 1
         if self.collisions['down']:
             self.air_time = 0
-        
+
         if self.air_time > 4:
             self.set_action('jump')
         elif movement[0] != 0:
