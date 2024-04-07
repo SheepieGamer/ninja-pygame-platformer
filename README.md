@@ -12,3 +12,7 @@
 #### Do not, under any circumstances, edit any of the files under the **"data"** directory!
 
 > Thank you
+
+
+###### I'm not gonna document the level editor. It's mostly for me.
+If you know what you are doing, look into the editor code and figure out how to use it.
