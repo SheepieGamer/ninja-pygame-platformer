@@ -7,6 +7,11 @@ from scripts.clouds import Clouds
 from scripts.particle import Particle
 from scripts.spark import Spark
 
+
+
+
+
+
 class Game:
     def __init__(self):
         pygame.init()
@@ -15,7 +20,7 @@ class Game:
         self.screen = pygame.display.set_mode((640, 480))
         self.display = pygame.Surface((320, 240))
 
-        self.clock = pygame.time.Clock()
+        self.clock = pygame.time.Clock()   
 
         self.movement = [False, False]
 
