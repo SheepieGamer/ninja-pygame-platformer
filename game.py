@@ -40,6 +40,20 @@ class Game:
             'projectile': load_image('projectile.png'),
         }
 
+        self.sfx = {
+            'jump': pygame.mixer.Sound('data/sfx/jump.wav'),
+            'dash': pygame.mixer.Sound('data/sfx/dash.wav'),
+            'hit': pygame.mixer.Sound('data/sfx/hit.wav'),
+            'shoot': pygame.mixer.Sound('data/sfx/shoot.wav'),
+            'ambience': pygame.mixer.Sound('data/sfx/ambience.wav'),
+        }
+
+        self.sfx['ambience'].set_volume(0.2)
+        self.sfx['shoot'].set_volume(0.4)
+        self.sfx['hit'].set_volume(0.8)
+        self.sfx['dash'].set_volume(0.3)
+        self.sfx['jump'].set_volume(0.7)
+
         self.clouds = Clouds(self.assets['clouds'], count=16)
 
         self.player = Player(self, (50, 50), (8, 15))
@@ -76,6 +90,12 @@ class Game:
         self.transition = -30
 
     def run(self):
+        pygame.mixer.music.load('data/music.wav')
+        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.play(-1)
+
+        self.sfx['ambience'].play(-1)
+
         while True:
             self.display.blit(self.assets['background'], (0, 0))
 
@@ -135,6 +155,7 @@ class Game:
                     if self.player.rect().collidepoint(projectile[0]):
                         self.projectiles.remove(projectile)
                         self.dead += 1
+                        self.sfx['hit'].play()
                         self.screenshake = max(16, self.screenshake)
                         for i in range(30):
                             angle = random.random() * math.pi * 2
@@ -166,9 +187,11 @@ class Game:
                     if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                         self.movement[1] = True
                     if event.key == pygame.K_UP or event.key == pygame.K_w or event.key == pygame.K_SPACE:
-                        self.player.jump()
+                        if self.player.jump():
+                            self.sfx['jump'].play()
                     if event.key == pygame.K_x:
-                        self.player.dash()
+                        if self.player.dash():
+                            self.sfx['dash'].play()
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                         self.movement[0] = False
