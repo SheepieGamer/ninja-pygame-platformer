@@ -140,9 +140,10 @@ class Player(PhysicsEntity):
     def update(self, tilemap, movement=(0, 0)):
         super().update(tilemap, movement=movement)
 
-        self.air_time += 1
+        if not self.wall_slide:
+            self.air_time += 1
 
-        if self.air_time > 120:
+        if self.air_time > 120 and not self.wall_slide:
             if not self.game.dead:
                 self.game.screenshake = max(16, self.game.screenshake)
             self.game.dead += 1
